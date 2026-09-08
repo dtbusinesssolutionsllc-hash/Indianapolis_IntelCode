@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-09-08T00:00:00+00:00",
+  "source": "SAMPLE DATA — run src/scraper.py to replace this with live records from data.indy.gov",
+  "total_records_fetched": 5,
+  "total_leads_parsed": 5,
+  "records_skipped": 0,
+  "leads": [
+    {
+      "document_number": "CIT26-004417",
+      "file_date": "2026-06-02",
+      "owner": "ESTATE OF R HENDRICKS",
+      "property_address": "4118 E MICHIGAN ST, INDIANAPOLIS, IN, 46201",
+      "legal_description": null,
+      "case_type": "Enforcement/Vacant Structure/Unsafe",
+      "case_status": "Case Initiated",
+      "seller_score": 40,
+      "score_breakdown": {
+        "code_violation": 25,
+        "repeat_violations": 15,
+        "tax_delinquency": null,
+        "probate_filing": null,
+        "divorce_bankruptcy": null
+      },
+      "source_url": null,
+      "scraped_at": "2026-09-08T00:00:00+00:00"
+    },
+    {
+      "document_number": "CIT26-004291",
+      "file_date": "2026-05-18",
+      "owner": "MIDWEST HOLDINGS LLC",
+      "property_address": "2210 N GALE ST, INDIANAPOLIS, IN, 46218",
+      "legal_description": null,
+      "case_type": "Enforcement/High Weeds and Grass",
+      "case_status": "Notice of Violation",
+      "seller_score": 25,
+      "score_breakdown": {
+        "code_violation": 25,
+        "repeat_violations": 0,
+        "tax_delinquency": null,
+        "probate_filing": null,
+        "divorce_bankruptcy": null
+      },
+      "source_url": null,
+      "scraped_at": "2026-09-08T00:00:00+00:00"
+    },
+    {
+      "document_number": "CIT26-003980",
+      "file_date": "2026-04-27",
+      "owner": "T & J RENTALS INC",
+      "property_address": "5602 W 30TH ST, INDIANAPOLIS, IN, 46224",
+      "legal_description": null,
+      "case_type": "Enforcement/Property Maintenance",
+      "case_status": "Case Initiated",
+      "seller_score": 25,
+      "score_breakdown": {
+        "code_violation": 25,
+        "repeat_violations": 0,
+        "tax_delinquency": null,
+        "probate_filing": null,
+        "divorce_bankruptcy": null
+      },
+      "source_url": null,
+      "scraped_at": "2026-09-08T00:00:00+00:00"
+    }
+  ]
+}
