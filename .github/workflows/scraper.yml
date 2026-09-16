@@ -1,0 +1,76 @@
+name: Refresh Indianapolis Lead Data
+
+# Runs the scraper on a schedule and on manual trigger, then commits the
+# updated data/output.json (which powers dashboard/index.html) back to the
+# repo. If you publish this repo via GitHub Pages pointed at /dashboard,
+# the dashboard will pick up each refresh automatically.
+
+on:
+  schedule:
+    # 08:00 UTC daily (~3am America/Indiana/Indianapolis). Adjust as needed.
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "Only fetch cases opened on/after this date (YYYY-MM-DD). Leave blank for all."
+        required: false
+        default: ""
+      max_records:
+        description: "Cap total records fetched (leave blank for no cap)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          SINCE_INPUT: ${{ github.event.inputs.since }}
+          MAX_RECORDS_INPUT: ${{ github.event.inputs.max_records }}
+        run: |
+          ARGS=""
+          if [ -n "$SINCE_INPUT" ]; then
+            ARGS="$ARGS --since $SINCE_INPUT"
+          fi
+          if [ -n "$MAX_RECORDS_INPUT" ]; then
+            ARGS="$ARGS --max-records $MAX_RECORDS_INPUT"
+          fi
+          python src/scraper.py --output data/output.json $ARGS
+
+      - name: Commit updated data (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/output.json; then
+            echo "No changes to data/output.json — skipping commit."
+          else
+            git add data/output.json
+            git commit -m "chore: refresh lead data ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
+            git push
+          fi
+
+      - name: Upload run artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lead-data
+          path: data/output.json
+          retention-days: 14
